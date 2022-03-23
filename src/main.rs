@@ -1,4 +1,4 @@
-use actix_web::{App, HttpServer, get, Responder};
+use actix_web::{App, HttpServer, get, Responder, middleware};
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;
@@ -16,7 +16,11 @@ async fn main() -> std::io::Result<()> {
     let mut server = HttpServer::new(|| {
         App::new()
           .service(hello_world)
+          .wrap(middleware::Logger::default()) // Logger追加
     });
+
+    // loggerを初期化
+    env_logger::init();
 
     // systemfdによってwatchしていた場合、そのhostとportを使用
     // そうでない場合、.envから読み込んだ環境変数を使用
