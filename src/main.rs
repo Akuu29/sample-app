@@ -3,10 +3,8 @@ use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;
 
-#[get("/hello")]
-async fn hello_world() -> impl Responder {
-    format!("Hello World!")
-}
+// todo moduleインポート
+mod todos;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -15,7 +13,7 @@ async fn main() -> std::io::Result<()> {
     let mut listenfd = ListenFd::from_env();
     let mut server = HttpServer::new(|| {
         App::new()
-          .service(hello_world)
+          .configure(todos::init_routes)
           .wrap(middleware::Logger::default()) // Logger追加
     });
 
