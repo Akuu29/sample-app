@@ -1,10 +1,18 @@
+#[macro_use]
+extern crate diesel;
+#[macro_use]
+extern crate diesel_migrations;
+
 use actix_web::{App, HttpServer, get, Responder, middleware};
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;
 
-// todo moduleインポート
+// moduleインポート
 mod todos;
+mod db;
+mod error_handler;
+mod schema;
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
