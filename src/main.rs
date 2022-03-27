@@ -3,7 +3,7 @@ extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 
-use actix_web::{App, HttpServer, get, Responder, middleware};
+use actix_web::{App, HttpServer, middleware};
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;

@@ -1,4 +1,4 @@
-use actix_web::{get, post, put, delete, web, HttpResponse, Responder};
+use actix_web::{get, post, put, delete, web, HttpResponse};
 use crate::todos::{Todo, Todos};
 use crate::error_handler::CustomError;
 use serde_json::json;
