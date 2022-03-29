@@ -6,6 +6,14 @@
 </head>
 <body>
     <div>
+        <form method="post" action="/todos">
+            <P>タイトル: <input type="text" name="title" /></P>
+            <p>内容: <input type="text" name="description" /></p>
+            <input type="hidden" name="done" value="false" />
+            <p><input type="submit" value="登録" /></p>
+        </form>
+    </div>
+    <div>
         {% for todo in todos %}
         <div>
             <div>タイトル:{{todo.title}}, 内容: {{todo.description}}</div>

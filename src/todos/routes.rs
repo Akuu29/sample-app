@@ -38,9 +38,20 @@ async fn find(id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
 }
 
 #[post("/todos")]
-async fn create(todo: web::Json<Todo>) -> Result<HttpResponse, CustomError> {
-    let todo = Todos::create(todo.into_inner())?;
-    Ok(HttpResponse::Ok().json(todo))
+async fn create(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
+    Todos::create(params.into_inner())?;
+    /* 
+     * header()
+     * 既存のヘッダーにヘッダーを追加する
+     * 
+     * header::LOCATION
+     * ページをリダイレクトするためのURLを示す
+     * 
+     * finish()
+     * 空のボディを設定し、Responseを生成する
+     * finish呼び出し後は、ResponseBuilderを使用することはできない
+     */
+    Ok(HttpResponse::Ok().header(header::LOCATION, "/").finish())
 }
 
 #[put("/todos/{id}")]
