@@ -1,7 +1,6 @@
-use actix_web::{get, post, put, delete, web, HttpResponse, ResponseError, http::header};
+use actix_web::{get, post, web, HttpResponse, ResponseError, http::header};
 use crate::todos::{Todo, Todos};
 use crate::error_handler::CustomError;
-use serde_json::json;
 use askama::Template;
 use thiserror::Error;
 
@@ -19,18 +18,18 @@ enum MyError {
 
 impl ResponseError for MyError {}
 
-// 全件取得
 #[get("/")]
 async fn find_all() -> Result<HttpResponse, MyError> {
     let todos = Todos::find_all().unwrap();
-    let html = IndexTemplate {todos};
+    let html = IndexTemplate {
+        todos,
+    };
     let response_body = html.render()?;
     Ok(HttpResponse::Ok()
       .content_type("text/html")
       .body(response_body))
 }
 
-// idより取得
 #[get("/todos/{id}")]
 async fn find(id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
     let todo = Todos::find(id.into_inner())?;
