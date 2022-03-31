@@ -54,10 +54,11 @@ async fn create(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
     Ok(HttpResponse::Ok().header(header::LOCATION, "/").finish())
 }
 
-#[put("/todos/{id}")]
-async fn update(id: web::Path<u64>, todo: web::Json<Todo>) -> Result<HttpResponse, CustomError> {
-    let todo  = Todos::update(id.into_inner(), todo.into_inner())?;
-    Ok(HttpResponse::Ok().json(todo))
+// 編集
+#[post("/todos/{id}/update")]
+async fn update(id: web::Path<u64>, params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
+    Todos::update(id.into_inner(), params.into_inner())?;
+    Ok(HttpResponse::SeeOther().header(header::LOCATION,  "/").finish())
 }
 
 #[delete("/todos/{id}")]

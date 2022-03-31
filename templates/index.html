@@ -16,7 +16,21 @@
     <div>
         {% for todo in todos %}
         <div>
-            <div>タイトル:{{todo.title}}, 内容: {{todo.description}}</div>
+            <div>
+                <p>タイトル:{{todo.title}}</p>
+                <p>内容: {{todo.description}}</p>
+            </div>
+            <!-- 更新 -->
+            {% let done = todo.done %}
+            {% if done == false %}
+                <form method="post" action="/todos/{{todo.id}}/update">
+                    <input type="hidden" name="title" value="{{todo.title}}" />
+                    <input type="hidden" name="description" value="{{todo.description}}" />
+                    <input type="hidden" name="id" value="{{todo.id}}" />
+                    <input type="hidden" name="done" value="true">
+                    <p><input type="submit" value="完了" /></p>
+                </form>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
