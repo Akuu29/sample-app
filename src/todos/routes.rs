@@ -61,10 +61,11 @@ async fn update(id: web::Path<u64>, params: web::Form<Todo>) -> Result<HttpRespo
     Ok(HttpResponse::SeeOther().header(header::LOCATION,  "/").finish())
 }
 
-#[delete("/todos/{id}")]
+// 削除
+#[post("/todos/{id}/delete")]
 async fn delete(id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
-    let deleted_todo = Todos::delete(id.into_inner())?;
-    Ok(HttpResponse::Ok().json(json!({"deleted": deleted_todo})))
+    Todos::delete(id.into_inner())?;
+    Ok(HttpResponse::SeeOther().header(header::LOCATION, "/").finish())
 }
 
 // 作成したエンドポイントをserviceにセットして公開
