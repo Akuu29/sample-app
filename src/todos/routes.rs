@@ -51,7 +51,7 @@ async fn create(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
      * 空のボディを設定し、Responseを生成する
      * finish呼び出し後は、ResponseBuilderを使用することはできない
      */
-    Ok(HttpResponse::Ok().header(header::LOCATION, "/").finish())
+    Ok(HttpResponse::SeeOther().header(header::LOCATION, "/").finish())
 }
 
 // 編集
