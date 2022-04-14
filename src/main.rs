@@ -3,10 +3,13 @@ extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 
-use actix_web::{App, HttpServer, middleware};
+use actix_web::{App, HttpServer};
+use actix_web::middleware::Logger;
+use actix_web::web::Data;
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;
+use tera::Tera;
 
 // moduleインポート
 mod todos;
@@ -14,15 +17,17 @@ mod db;
 mod error_handler;
 mod schema;
 
-#[actix_rt::main]
+#[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    dotenv().ok(); // 初期化
+    // .envから環境変数ロード
+    dotenv().ok();
 
     let mut listenfd = ListenFd::from_env();
-    let mut server = HttpServer::new(|| {
+    let mut server = HttpServer::new(move || {
         App::new()
-          .configure(todos::init_routes)
-          .wrap(middleware::Logger::default()) // Logger追加
+            .app_data(Data::new(Tera::new("templates/**/*").unwrap()))
+            .configure(todos::init_routes)
+            .wrap(Logger::default()) // Logger追加
     });
 
     // loggerを初期化

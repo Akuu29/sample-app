@@ -20,24 +20,6 @@
                 <p>タイトル:{{todo.title}}</p>
                 <p>内容: {{todo.description}}</p>
             </div>
-            {% let done = todo.done %}
-            {% if done == false %}
-                <!-- 更新 -->
-                <form method="post" action="/todos/{{todo.id}}/update">
-                    <input type="hidden" name="title" value="{{todo.title}}" />
-                    <input type="hidden" name="description" value="{{todo.description}}" />
-                    <input type="hidden" name="id" value="{{todo.id}}" />
-                    <input type="hidden" name="done" value="true">
-                    <p><input type="submit" value="完了" /></p>
-                </form>
-                <!-- 編集 -->
-                <form method="post" action="/todos/{{todo.id}}/update">
-                    <P>タイトル: <input type="text" name="title" value="{{todo.title}}"/></P>
-                    <p>内容: <input type="text" name="description" value="{{todo.description}}" /></p>
-                    <input type="hidden" name="done" value="false" value="{{todo.id}}" />
-                    <p><input type="submit" value="編集" /></p>
-                </form>
-            {% endif %}
             <!-- 削除 -->
             <form method="post" action="/todos/{{todo.id}}/delete">
                 <input type="hidden" name="id" value="{{todo.id}}">
