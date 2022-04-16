@@ -7,43 +7,46 @@
 <body>
     <div>
         <form method="post" action="/todos">
-            <P>タイトル: <input type="text" name="title" /></P>
-            <p>内容: <input type="text" name="description" /></p>
+            <P>Title: <input type="text" name="title" /></P>
+            <p>Description: <input type="text" name="description" /></p>
             <input type="hidden" name="done" value="false" />
-            <p><input type="submit" value="登録" /></p>
+            <p><input type="submit" value="Send" /></p>
         </form>
     </div>
     <div>
         {% for todo in todos %}
-        <div>
-            <div>
-                <p>タイトル:{{todo.title}}</p>
-                <p>内容: {{todo.description}}</p>
-            </div>
+            {% set id = todo.id %}
+            {% set title = todo.title %}
+            {% set description = todo.description %}
             {% set done = todo.done %}
+            {% if done %}
+                {% set status = "finished" %}
+            {% else %}
+                {% set status = "unfinished" %}
+            {% endif %}
+            <div>
+                <p>Title: {{title}}</p>
+                <p>Description: {{description}}</p>
+                <p>Status: {{status}}</p>
+            </div>
             {% if done == false %}
-                <!-- 更新 -->
-                <form method="post" action="/todos/{{todo.id}}/update">
-                    <input type="hidden" name="title" value="{{todo.title}}" />
-                    <input type="hidden" name="description" value="{{todo.description}}" />
-                    <input type="hidden" name="id" value="{{todo.id}}" />
-                    <input type="hidden" name="done" value="true">
-                    <p><input type="submit" value="完了" /></p>
+                <!-- 完了 -->
+                <form method="post" action="/todos/{{id}}/update">
+                    <input type="hidden" name="title" value="{{title}}" />
+                    <input type="hidden" name="description" value="{{description}}" />
+                    <input type="hidden" name="done" value="true" />
+                    <p><input type="submit" value="Done" /></p>
                 </form>
                 <!-- 編集 -->
-                <form method="post" action="/todos/{{todo.id}}/update">
-                    <P>タイトル: <input type="text" name="title" value="{{todo.title}}"/></P>
-                    <p>内容: <input type="text" name="description" value="{{todo.description}}" /></p>
-                    <input type="hidden" name="done" value="false" value="{{todo.id}}" />
-                    <p><input type="submit" value="編集" /></p>
+                <form method="get" action="/todos/{{todo.id}}">
+                    <p><input type="submit" value="Edit" /></p>
                 </form>
             {% endif %}
             <!-- 削除 -->
-            <form method="post" action="/todos/{{todo.id}}/delete">
-                <input type="hidden" name="id" value="{{todo.id}}">
-                <p><input type="submit" value="削除" /></p>
+            <form method="post" action="/todos/{{id}}/delete">
+                <input type="hidden" name="id" value="{{id}}">
+                <p><input type="submit" value="Delete" /></p>
             </form>
-        </div>
         {% endfor %}
     </div>
 </body>
