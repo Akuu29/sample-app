@@ -20,11 +20,18 @@ async fn find_all(tmpl: web::Data<Tera>) -> Result<HttpResponse, CustomError> {
 
 // 1件取得
 #[get("/todos/{id}")]
-async fn find(id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
+async fn find(tmpl: web::Data<Tera>, id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
     let todo = Todos::find(id.into_inner())?;
 
+    let mut context = Context::new();
+    context.insert("todo", &todo);
+
+    let response_body = tmpl
+        .render("edit.html", &context)
+        .unwrap();
     Ok(HttpResponse::Ok()
-        .json(todo))
+        .content_type("text/html")
+        .body(response_body))
 }
 
 // 作成
