@@ -1,53 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>todo</title>
-</head>
-<body>
-    <div>
-        <form method="post" action="/todos">
-            <P>Title: <input type="text" name="title" /></P>
-            <p>Description: <input type="text" name="description" /></p>
-            <input type="hidden" name="done" value="false" />
-            <p><input type="submit" value="Send" /></p>
+{% extends "base.html" %}
+{% block title %}index{% endblock title %}
+{% block head %}
+  <meta charset="UTF-8">
+{% endblock head %}
+{% block content %}
+  <div>
+    <form method="post" action="/todos">
+      <P>Title: <input type="text" name="title" /></P>
+      <p>Description: <input type="text" name="description" /></p>
+      <input type="hidden" name="done" value="false" />
+      <p><input type="submit" value="Send" /></p>
+    </form>
+  </div>
+  <div>
+    {% for todo in todos %}
+      {% set id = todo.id %}
+      {% set title = todo.title %}
+      {% set description = todo.description %}
+      {% set done = todo.done %}
+      {% if done %}
+        {% set status = "finished" %}
+      {% else %}
+        {% set status = "unfinished" %}
+      {% endif %}
+      <div>
+        <p>Title: {{title}}</p>
+        <p>Description: {{description}}</p>
+        <p>Status: {{status}}</p>
+      </div>
+      {% if done == false %}
+        <!-- 完了 -->
+        <form method="post" action="/todos/{{id}}/update">
+          <input type="hidden" name="title" value="{{title}}" />
+          <input type="hidden" name="description" value="{{description}}" />
+          <input type="hidden" name="done" value="true" />
+          <p><input type="submit" value="Done" /></p>
         </form>
-    </div>
-    <div>
-        {% for todo in todos %}
-            {% set id = todo.id %}
-            {% set title = todo.title %}
-            {% set description = todo.description %}
-            {% set done = todo.done %}
-            {% if done %}
-                {% set status = "finished" %}
-            {% else %}
-                {% set status = "unfinished" %}
-            {% endif %}
-            <div>
-                <p>Title: {{title}}</p>
-                <p>Description: {{description}}</p>
-                <p>Status: {{status}}</p>
-            </div>
-            {% if done == false %}
-                <!-- 完了 -->
-                <form method="post" action="/todos/{{id}}/update">
-                    <input type="hidden" name="title" value="{{title}}" />
-                    <input type="hidden" name="description" value="{{description}}" />
-                    <input type="hidden" name="done" value="true" />
-                    <p><input type="submit" value="Done" /></p>
-                </form>
-                <!-- 編集 -->
-                <form method="get" action="/todos/{{id}}">
-                    <p><input type="submit" value="Edit" /></p>
-                </form>
-            {% endif %}
-            <!-- 削除 -->
-            <form method="post" action="/todos/{{id}}/delete">
-                <input type="hidden" name="id" value="{{id}}">
-                <p><input type="submit" value="Delete" /></p>
-            </form>
-        {% endfor %}
-    </div>
-</body>
-</html>
+        <!-- 編集 -->
+        <form method="get" action="/todos/{{id}}">
+          <p><input type="submit" value="Edit" /></p>
+        </form>
+      {% endif %}
+      <!-- 削除 -->
+      <form method="post" action="/todos/{{id}}/delete">
+        <input type="hidden" name="id" value="{{id}}">
+        <p><input type="submit" value="Delete" /></p>
+      </form>
+    {% endfor %}
+  </div>
+{% endblock content %}

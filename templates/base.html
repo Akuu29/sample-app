@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block head %}
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock title %} rust-sample-app-todo</title>
+  <!-- <link rel="stylesheet"> -->
+  {% endblock head %}
+</head>
+<body>
+  <div id="header">
+    simple todo app
+  </div>
+  <div id="content">
+    {% block content %}{% endblock content %}
+  </div>
+  <div id="footer">
+    simple todo app
+  </div>
+</body>
+</html>

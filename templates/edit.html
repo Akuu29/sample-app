@@ -1,22 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>todo-edit</title>
-</head>
-    <div>
-        <a href="/">top</a>
-    </div>
-    <div>
-        {% set id = todo.id %}
-        {% set title = todo.title %}
-        {% set description = todo.description %}
-        {% set done = todo.done %}
-        <form method="post" action="/todos/{{id}}/update">
-            <p>Title: <input type="text" name="title" value="{{title}}" /></p>
-            <p>Description: <input type="text" name="description" value="{{description}}" /></p>
-            <input type="hidden" name="done" value="{{done}}" />
-            <p><input type="submit" value="Send"></p>
-        </form>
-    </div>
-</html>
+{% extends "base.html" %}
+{% block title %}edit{% endblock title %}
+{% block head %}
+  <meta charset="UTF-8">
+{% endblock head %}
+{% block content %}
+  <div>
+    <a href="/">top</a>
+  </div>
+  <div>
+    {% set id = todo.id %}
+    {% set title = todo.title %}
+    {% set description = todo.description %}
+    {% set done = todo.done %}
+    <form method="post" action="/todos/{{id}}/update">
+      <p>Title: <input type="text" name="title" value="{{title}}" /></p>
+      <p>Description: <input type="text" name="description" value="{{description}}" /></p>
+      <input type="hidden" name="done" value="{{done}}" />
+      <p><input type="submit" value="Send"></p>
+    </form>
+  </div>
+{% endblock content %}
