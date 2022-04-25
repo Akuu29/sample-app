@@ -26,6 +26,7 @@ async fn main() -> std::io::Result<()> {
     let mut server = HttpServer::new(move || {
         App::new()
             .app_data(Data::new(Tera::new("templates/**/*").unwrap()))
+            .service(actix_files::Files::new("/static", "./static"))
             .configure(todos::init_routes)
             .wrap(Logger::default()) // Logger追加
     });

@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
 {% endblock head %}
 {% block content %}
+  <div id="app"></div>
   <div>
+    <!-- 投稿 --><!-- react 置き換え -->
+    <!-- <div id="form"></div> -->
     <form method="post" action="/todos">
       <P>Title: <input type="text" name="title" /></P>
       <p>Description: <input type="text" name="description" /></p>
@@ -29,23 +32,24 @@
         <p>Status: {{status}}</p>
       </div>
       {% if done == false %}
-        <!-- 完了 -->
+        <!-- 完了 --><!-- react 置き換え-->
         <form method="post" action="/todos/{{id}}/update">
           <input type="hidden" name="title" value="{{title}}" />
           <input type="hidden" name="description" value="{{description}}" />
           <input type="hidden" name="done" value="true" />
           <p><input type="submit" value="Done" /></p>
         </form>
-        <!-- 編集 -->
+        <!-- 編集 --><!-- react 置き換え -->
         <form method="get" action="/todos/{{id}}">
           <p><input type="submit" value="Edit" /></p>
         </form>
       {% endif %}
-      <!-- 削除 -->
+      <!-- 削除 --><!-- react 置き換え -->
       <form method="post" action="/todos/{{id}}/delete">
         <input type="hidden" name="id" value="{{id}}">
         <p><input type="submit" value="Delete" /></p>
       </form>
     {% endfor %}
   </div>
+  <script src="/static/js/bundle/client.min.js" type="module"></script>
 {% endblock content %}
