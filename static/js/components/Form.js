@@ -1,6 +1,6 @@
-import React from "react";
+import React, {Component} from "react";
 
-export default class Form extends React.Component {
+export default class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,13 +11,18 @@ export default class Form extends React.Component {
   }
 
   handleChange(event) {
-    let key = event.target.name;
-    let val = event.target.value;
+    const key = event.target.name;
+    const val = event.target.value;
     this.setState({[key]: val});
   }
 
   handleSubmit(event) {
-    // fetch
+    let todo = this.state;
+    const params = {
+      method: "POST",
+      body: new URLSearchParams(todo),
+    }
+    fetch("/todos", params);
   }
 
   render() {
@@ -32,7 +37,7 @@ export default class Form extends React.Component {
         <div>
           <label>
             Description:
-            <input type="text" name="description" value={this.props.description} onChange={this.handleChange.bind(this)} />
+            <textarea type="text" name="description" value={this.props.description} onChange={this.handleChange.bind(this)} />
           </label>
         </div>
         <input type="submit" value="Send" />
