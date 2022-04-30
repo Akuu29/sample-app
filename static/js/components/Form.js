@@ -16,12 +16,12 @@ export default class Form extends Component {
     this.setState({[key]: val});
   }
 
-  handleSubmit(event) {
+  handleSubmit() {
     let todo = this.state;
     const params = {
       method: "POST",
       body: new URLSearchParams(todo),
-    }
+    };
     fetch("/todos", params);
   }
 

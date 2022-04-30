@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Form from "./components/Form";
+import Layout from "./components/Layout";
 
 const app = document.getElementById('app');
-ReactDOM.render(<Form />, app);
+ReactDOM.render(<Layout />, app);
