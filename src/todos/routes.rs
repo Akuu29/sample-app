@@ -18,6 +18,21 @@ async fn find_all(tmpl: web::Data<Tera>) -> Result<HttpResponse, CustomError> {
         .body(response_body))
 }
 
+#[get("/todos")]
+async fn index(tmpl: web::Data<Tera>) -> Result<HttpResponse, CustomError> {
+    let todos = Todos::find_all().unwrap();
+
+    let mut context = Context::new();
+    context.insert("todos", &todos);
+    
+    let response_body = tmpl
+        .render("index.html", &context)
+        .unwrap();
+    Ok(HttpResponse::Ok()
+        .content_type("text/html")
+        .body(response_body))
+}
+
 // 1件取得
 #[get("/todos/{id}")]
 async fn find(tmpl: web::Data<Tera>, id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
@@ -38,7 +53,7 @@ async fn find(tmpl: web::Data<Tera>, id: web::Path<u64>) -> Result<HttpResponse,
 #[post("/todos")]
 async fn create(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
     Todos::create(params.into_inner())?;
-    
+
     Ok(HttpResponse::SeeOther()
         .append_header((header::LOCATION, "/"))
         .finish())
