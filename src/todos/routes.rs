@@ -18,21 +18,6 @@ async fn find_all(tmpl: web::Data<Tera>) -> Result<HttpResponse, CustomError> {
         .body(response_body))
 }
 
-#[get("/todos")]
-async fn index(tmpl: web::Data<Tera>) -> Result<HttpResponse, CustomError> {
-    let todos = Todos::find_all().unwrap();
-
-    let mut context = Context::new();
-    context.insert("todos", &todos);
-    
-    let response_body = tmpl
-        .render("index.html", &context)
-        .unwrap();
-    Ok(HttpResponse::Ok()
-        .content_type("text/html")
-        .body(response_body))
-}
-
 // 1件取得
 #[get("/todos/{id}")]
 async fn find(tmpl: web::Data<Tera>, id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
@@ -60,7 +45,7 @@ async fn create(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
 }
 
 // 編集
-#[post("/todos/{id}/update")]
+#[put("/todos")]
 async fn update(id: web::Path<u64>, params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
     Todos::update(id.into_inner(), params.into_inner())?;
     Ok(HttpResponse::SeeOther()
@@ -68,8 +53,17 @@ async fn update(id: web::Path<u64>, params: web::Form<Todo>) -> Result<HttpRespo
         .finish())
 }
 
+// statusの更新
+#[patch("/todos")]
+async fn update_status(id: web::Path<u64>, params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
+    Todos::update(id.into_inner(), params.into_inner())?;
+    Ok(HttpResponse::SeeOther()
+        .append_header((header::LOCATION, "/"))
+        .finish())
+}
+
 // 削除
-#[post("/todos/{id}/delete")]
+#[delete("/todos")]
 async fn delete(id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
     Todos::delete(id.into_inner())?;
     Ok(HttpResponse::SeeOther()
