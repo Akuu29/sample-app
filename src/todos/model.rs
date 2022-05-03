@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
  */
 #[derive(Deserialize, Serialize, AsChangeset, Insertable)]
 #[table_name="todos"]
-pub struct Todo {
+pub struct NewTodo {
     pub title: String,
     pub description: String,
     pub done: bool,
@@ -19,7 +19,7 @@ pub struct Todo {
 // Queryable -> 構造にクエリを発行、実行できる特性を付与
 #[derive(Serialize, Deserialize, Queryable, Insertable)]
 #[table_name = "todos"]
-pub struct Todos {
+pub struct Todo {
     pub id: u64,
     pub title: String,
     pub description: String,
@@ -27,9 +27,9 @@ pub struct Todos {
 }
 
 // リクエストデータからTodo構造体を作成する
-impl Todo {
-    fn from(todo: Todo) -> Todo {
-        Todo {
+impl NewTodo {
+    fn from(todo: NewTodo) -> NewTodo {
+        NewTodo {
             title: todo.title, 
             description: todo.description,
             done: todo.done,
@@ -37,11 +37,11 @@ impl Todo {
     }
 }
 
-impl Todos {
+impl Todo {
     // 全件取得
     pub fn find_all() -> Result<Vec<Self>, CustomError> {
         let conn = db::connection()?;
-        let todos = todos::table.load::<Todos>(&conn)?;
+        let todos = todos::table.load::<Todo>(&conn)?;
         Ok(todos)
     }
     // id指定取得
@@ -51,27 +51,39 @@ impl Todos {
         Ok(todo)
     }
     // 作成
-    pub fn create(todo: Todo) -> Result<usize, CustomError> {
+    pub fn create(todo: NewTodo) -> Result<usize, CustomError> {
         let conn = db::connection()?;
-        let todo = Todo::from(todo);
+        let todo = NewTodo::from(todo);
         let todo = diesel::insert_into(todos::table)
           .values(todo)
           .execute(&conn)?;
         Ok(todo)
     }
     // 更新
-    pub fn update(id: u64, todo: Todo) -> Result<usize, CustomError> {
+    pub fn update(todo: Todo) -> Result<usize, CustomError> {
         let conn = db::connection()?;
         let todo = diesel::update(todos::table)
-          .filter(todos::id.eq(id))
-          .set(todo)
-          .execute(&conn)?;
+            .filter(todos::id.eq(todo.id))
+            .set((
+                todos::title.eq(todo.title),
+                todos::description.eq(todo.description)
+            ))
+            .execute(&conn)?;
+        Ok(todo)
+    }
+    // ステータス更新
+    pub fn update_status(todo: Todo) -> Result<usize, CustomError> {
+        let conn = db::connection()?;
+        let todo = diesel::update(todos::table)
+            .filter(todos::id.eq(todo.id))
+            .set(todos::done.eq(todo.done))
+            .execute(&conn)?;
         Ok(todo)
     }
     // 削除
-    pub fn delete(id: u64) -> Result<usize, CustomError> {
+    pub fn delete(todo: Todo) -> Result<usize, CustomError> {
         let conn = db::connection()?;
-        let res = diesel::delete(todos::table.filter(todos::id.eq(id))).execute(&conn)?;
+        let res = diesel::delete(todos::table.filter(todos::id.eq(todo.id))).execute(&conn)?;
         Ok(res)
     }
 }
