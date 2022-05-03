@@ -28,7 +28,8 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(Tera::new("templates/**/*").unwrap()))
             .service(actix_files::Files::new("/static", "./static"))
             .configure(todos::init_routes)
-            .wrap(Logger::default()) // Logger追加
+            // .service(todos::get_scope())
+            .wrap(Logger::default())
     });
 
     // loggerを初期化

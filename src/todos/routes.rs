@@ -3,6 +3,16 @@ use crate::todos::{NewTodo, Todo};
 use crate::error_handler::CustomError;
 use tera::{Tera, Context};
 
+// pub fn get_scope() -> Scope {
+//     web::scope("/todo")
+//         .service(find_all)
+//         .service(find)
+//         .service(create)
+//         .service(update)
+//         .service(update_status)
+//         .service(delete)
+// }
+
 #[get("/")]
 async fn index(tmpl: web::Data<Tera>) -> Result<HttpResponse, CustomError> {
     let todos = Todo::find_all().unwrap();
