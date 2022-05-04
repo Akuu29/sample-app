@@ -35,21 +35,21 @@ async fn find_all() -> Result<HttpResponse, CustomError> {
     Ok(HttpResponse::Ok().json(todos))
 }
 
-// 1件取得
-#[get("/todos/{id}")]
-async fn find(tmpl: web::Data<Tera>, id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
-    let todo = Todo::find(id.into_inner())?;
+// // 1件取得
+// #[get("/todos/{id}")]
+// async fn find(tmpl: web::Data<Tera>, id: web::Path<u64>) -> Result<HttpResponse, CustomError> {
+//     let todo = Todo::find(id.into_inner())?;
 
-    let mut context = Context::new();
-    context.insert("todo", &todo);
+//     let mut context = Context::new();
+//     context.insert("todo", &todo);
 
-    let response_body = tmpl
-        .render("edit.html", &context)
-        .unwrap();
-    Ok(HttpResponse::Ok()
-        .content_type("text/html")
-        .body(response_body))
-}
+//     let response_body = tmpl
+//         .render("edit.html", &context)
+//         .unwrap();
+//     Ok(HttpResponse::Ok()
+//         .content_type("text/html")
+//         .body(response_body))
+// }
 
 // 作成
 #[post("/todos")]
@@ -92,7 +92,7 @@ async fn delete(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
 pub fn init_routes(config: &mut web::ServiceConfig) {
     config.service(index);
     config.service(find_all);
-    config.service(find);
+    // config.service(find);
     config.service(create);
     config.service(update);
     config.service(update_status);
