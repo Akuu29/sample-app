@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import Todo from "./Todos/Todo";
 
 export default class Form extends Component {
   constructor(props) {
