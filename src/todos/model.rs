@@ -27,15 +27,15 @@ pub struct Todo {
 }
 
 // リクエストデータからTodo構造体を作成する
-impl NewTodo {
-    fn from(todo: NewTodo) -> NewTodo {
-        NewTodo {
-            title: todo.title, 
-            description: todo.description,
-            done: todo.done,
-        }
-    }
-}
+// impl NewTodo {
+//     fn from(todo: NewTodo) -> NewTodo {
+//         NewTodo {
+//             title: todo.title, 
+//             description: todo.description,
+//             done: todo.done,
+//         }
+//     }
+// }
 
 impl Todo {
     // 全件取得
@@ -53,7 +53,7 @@ impl Todo {
     // 作成
     pub fn create(todo: NewTodo) -> Result<usize, CustomError> {
         let conn = db::connection()?;
-        let todo = NewTodo::from(todo);
+        // let todo = NewTodo::from(todo);
         let todo = diesel::insert_into(todos::table)
           .values(todo)
           .execute(&conn)?;
