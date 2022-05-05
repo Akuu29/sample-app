@@ -1,4 +1,5 @@
-use actix_web::{get, post, put, patch, delete, web, HttpResponse, http::header, Scope};
+use actix_web::{get, post, put, patch, delete, web, HttpResponse, Scope};
+use serde_json::json;
 use crate::todos::{NewTodo, Todo};
 use crate::error_handler::CustomError;
 use tera::{Tera, Context};
@@ -54,38 +55,33 @@ async fn find_all() -> Result<HttpResponse, CustomError> {
 // 作成
 #[post("/todos")]
 async fn create(params: web::Form<NewTodo>) -> Result<HttpResponse, CustomError> {
-    Todo::create(params.into_inner())?;
+    let create_result = Todo::create(params.into_inner())?;
 
-    Ok(HttpResponse::SeeOther()
-        .append_header((header::LOCATION, "/"))
-        .finish())
+    Ok(HttpResponse::Created().json(json!({"status": "success", "todo": create_result})))
 }
 
 // 編集
 #[put("/todos")]
 async fn update(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
-    Todo::update(params.into_inner())?;
-    Ok(HttpResponse::SeeOther()
-        .append_header((header::LOCATION, "/"))
-        .finish())
+    let update_result = Todo::update(params.into_inner())?;
+
+    Ok(HttpResponse::Created().json(json!({"status": "success", "todo": update_result})))
 }
 
 // statusの更新
 #[patch("/todos")]
 async fn update_status(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
-    Todo::update_status(params.into_inner())?;
-    Ok(HttpResponse::SeeOther()
-        .append_header((header::LOCATION, "/"))
-        .finish())
+    let update_status_result = Todo::update_status(params.into_inner())?;
+
+    Ok(HttpResponse::Created().json(json!({"status": "success", "todo": update_status_result})))
 }
 
 // 削除
 #[delete("/todos")]
 async fn delete(params: web::Form<Todo>) -> Result<HttpResponse, CustomError> {
-    Todo::delete(params.into_inner())?;
-    Ok(HttpResponse::SeeOther()
-        .append_header((header::LOCATION, "/"))
-        .finish())
+    let delete_result = Todo::delete(params.into_inner())?;
+
+    Ok(HttpResponse::Created().json(json!({"status": "success", "todo": delete_result})))
 }
 
 // 作成したエンドポイントをserviceにセットして公開
