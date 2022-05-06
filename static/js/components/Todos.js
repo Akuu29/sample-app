@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-function Done(props) {
+function DoneBtn(props) {
   return (
     <button onClick={props.onClick}>
       Done
@@ -8,7 +8,7 @@ function Done(props) {
   );
 }
 
-function Delete(props) {
+function DeleteBtn(props) {
   return (
     <button onClick={props.onClick}>
       Delete
@@ -16,9 +16,9 @@ function Delete(props) {
   );
 }
 
-function Edit() {
+function EditBtn(props) {
   return (
-    <button>
+    <button onClick={props.onClick}>
       Edit
     </button>
   );
@@ -75,10 +75,10 @@ export default class Todos extends Component {
             {!todo.done &&
               <div>
                 <p>Status: unfinished</p>
-                <Done onClick={() => this.handleDone(todo)}/>
-                <Edit />
+                <DoneBtn onClick={() => this.handleDone(todo)}/>
+                <EditBtn onClick={() => this.handleEdit(todo)}/>
               </div>}
-            <Delete onClick={() => this.handleDelete(todo)} />
+            <DeleteBtn onClick={() => this.handleDelete(todo)} />
           </div>
         )}
       </div>
