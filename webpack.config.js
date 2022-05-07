@@ -1,29 +1,26 @@
-var debug = process.env.NODE_ENV !== "production";
-var webpack = require('webpack');
-var path = require('path');
+const path = require('path');
 
+/** @type {import('webpack').Configuration} */
 module.exports = {
-  context: path.join(__dirname, "static"),
-  entry: "./js/client.js",
+  mode: "development",
+  entry: {
+    bundle: path.join(__dirname, "static/js", "client.js")
+  },
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      exclude: /(node_modules|bower_components)/,
-      use: [{
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-react', '@babel/preset-env'],
-          plugins: ['@babel/plugin-transform-runtime'],
-        }
-      }]
-    }]
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: "babel-loader",
+      }
+    ]
+  },
+  devServer: {
+    static: {
+      directory: "./static/bundle",
+    }
   },
   output: {
-    path: __dirname + "/static/js/bundle",
-    filename: "client.min.js"
-  },
-  plugins: debug ? [] : [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-  ]
+    filename: "bundle.js",
+    path: path.join(__dirname, "static/bundle"),
+  }
 };

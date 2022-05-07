@@ -1,5 +1,4 @@
 /target
 /node_modules
 .env
-/static/js/bundle
-/static/index.html
+/static/bundle
