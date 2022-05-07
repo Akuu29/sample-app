@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import Edit from "./todos/Edit";
 
 function DoneBtn(props) {
   return (
@@ -24,10 +25,35 @@ function EditBtn(props) {
   );
 }
 
+function CloseBtn(props) {
+  return (
+    <button onClick={props.onClick}>
+      Close
+    </button>
+  )
+}
+
+function EditForm(props) {
+  let isShow = props.isShow;
+  if(isShow) {
+    return (
+      <div>
+        <Edit todo={props.todo} />
+        <CloseBtn onClick={props.callback}/>
+      </div>
+    );
+  }else {
+    return null;
+  }
+}
+
 export default class Todos extends Component {
   constructor(props) {
     super(props);
-    this.state = {todos: []};
+    this.state = {
+      todos: [],
+      isShow: {},
+    };
   }
   
   async componentDidMount() {
@@ -54,6 +80,14 @@ export default class Todos extends Component {
     await fetch("/todos", params);
   }
 
+  handleRenderEdit(id) {
+    let isShow = this.state.isShow;
+    isShow[id] = true;
+    this.setState({
+      isShow: isShow
+    });
+  }
+
   async handleDelete(todo) {
     const params = {
       method: "DELETE",
@@ -61,6 +95,14 @@ export default class Todos extends Component {
     };
 
     await fetch("/todos", params);
+  }
+
+  handleCloseBtn(id) {
+    let isShow = this.state.isShow;
+    isShow[id] = false;
+    this.setState({
+      isShow: isShow
+    });
   }
 
   render() {
@@ -75,8 +117,11 @@ export default class Todos extends Component {
             {!todo.done &&
               <div>
                 <p>Status: unfinished</p>
-                <DoneBtn onClick={() => this.handleDone(todo)}/>
-                <EditBtn onClick={() => this.handleEdit(todo)}/>
+                <DoneBtn onClick={() => this.handleDone(todo)} />
+                <EditBtn onClick={() => this.handleRenderEdit(todo.id)} />
+                <EditForm isShow={this.state.isShow[todo.id]}
+                  callback={() => this.handleCloseBtn(todo.id)}
+                  todo={todo} />
               </div>}
             <DeleteBtn onClick={() => this.handleDelete(todo)} />
           </div>

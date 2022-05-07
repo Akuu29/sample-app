@@ -16,13 +16,14 @@ export default class Form extends Component {
     this.setState({[key]: val});
   }
 
-  handleSubmit() {
-    let todo = this.state;
+  async handleSubmit() {
+    const todo = this.state;
     const params = {
       method: "POST",
       body: new URLSearchParams(todo),
     };
-    fetch("/todos", params);
+    const submit_result = await fetch("/todos", params);
+    // alert(submit_result.status);
   }
 
   render() {
