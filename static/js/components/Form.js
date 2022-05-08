@@ -23,7 +23,6 @@ export default class Form extends Component {
       body: new URLSearchParams(todo),
     };
     const submit_result = await fetch("/todos", params);
-    // alert(submit_result.status);
   }
 
   render() {
