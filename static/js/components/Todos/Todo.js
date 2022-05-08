@@ -1,18 +1,13 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 import DoneBtn from "./Todo/DoneBtn";
 import EditBtn from "./Todo/EditBtn";
 import EditForm from "./Todo/Edit";
 import DeleteBtn from "./Todo/DeleteBtn";
 
-export default class Todo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isShow: false,
-    };
-  }
+const Todo = ({todo}) => {
+  const [isShow, setIsShow] = useState(false);
 
-  async handleDoneBtn(todo) {
+  const handleDoneBtn = async () => {
     let todoCompleted = JSON.parse(JSON.stringify(todo));
     todoCompleted.done = true;
 
@@ -26,40 +21,28 @@ export default class Todo extends Component {
     // エラーハンドラ
   }
 
-  handleRenderEditForm(action) {
+  const handleRenderEditForm = (action) => {
     let bool = action == "hide" ? false : true;
-    this.setState({isShow: bool});
+    setIsShow(bool);
   }
 
-  async handleDeleteBtn(todo) {
-    const params = {
-      method: "DELETE",
-      body: new URLSearchParams(todo),
-    };
-
-    const delete_result = await fetch("/todos", params);
-    // stateの更新
-    // エラーハンドラ
-  }
-
-  render() {
-    let todo = this.props.todo;
-    return (
-      <div>
-        <p>Title: {todo.title}</p>
-        <p>Description: {todo.description}</p>
-        {todo.done && <p>Status: Complete</p>}
-        {!todo.done &&
-          <div>
-            <p>Status: Incomplete</p>
-            <DoneBtn onClick={() => this.handleDone(todo)} />
-            <EditBtn onClick={() => this.handleRenderEditForm("")} />
-            <EditForm isShow={this.state.isShow}
-              callback={() => this.handleRenderEditForm("hide")}
-              todo={todo} />
-          </div>}
-        <DeleteBtn onClick={() => this.handleDeleteBtn(todo)} />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <p>Title: {todo.title}</p>
+      <p>Description: {todo.description}</p>
+      {todo.done && <p>Status: Complete</p>}
+      {!todo.done &&
+        <div>
+          <p>Status: Incomplete</p>
+          <DoneBtn onClick={() => handleDoneBtn(todo)} />
+          <EditBtn onClick={() => handleRenderEditForm("show")} />
+          <EditForm isShow={isShow}
+            callback={() => handleRenderEditForm("hide")}
+            todo={todo} />
+        </div>}
+      <DeleteBtn onClick={() => this.handleDeleteBtn(todo)} />
+    </div>
+  );
 }
+
+export default Todo;

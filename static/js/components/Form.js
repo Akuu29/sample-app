@@ -1,47 +1,44 @@
-import React, {Component} from "react";
+import React, {useState} from "react";
 
-export default class Form extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "",
-      description: "",
-      done: false,
-    };
-  }
+const Form = () => {
+  const [todo, setTodo] = useState({
+    title: "",
+    description: "",
+    done: false,
+  });
 
-  handleChange(event) {
+  const handleChange = (event) => {
     const key = event.target.name;
     const val = event.target.value;
-    this.setState({[key]: val});
+    setTodo({...todo, [key]: val});
   }
 
-  async handleSubmit() {
-    const todo = this.state;
+  const handleSubmit = async () => {
     const params = {
       method: "POST",
       body: new URLSearchParams(todo),
     };
-    const submit_result = await fetch("/todos", params);
+
+    const create_result = await fetch("/todos", params);
   }
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <div>
-          <label>
-            Title:
-            <input type="text" name="title" value={this.props.title} onChange={this.handleChange.bind(this)} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Description:
-            <textarea type="text" name="description" value={this.props.description} onChange={this.handleChange.bind(this)} />
-          </label>
-        </div>
-        <input type="submit" value="Send" />
-      </form>
-    );
-  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>
+          Title:
+          <input type="text" name="title" value={todo.title} onChange={handleChange} />
+        </label>
+      </div>
+      <div>
+        <label>
+          Description:
+          <textarea type="text" name="description" value={todo.description} onChange={handleChange} />
+        </label>
+      </div>
+      <input type="submit" value="Send" />
+    </form>
+  );
 }
+
+export default Form;
