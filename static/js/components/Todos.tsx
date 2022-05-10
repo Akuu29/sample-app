@@ -1,11 +1,20 @@
 import React, {useEffect, useState} from "react";
 import Todo from "./Todos/Todo";
 
-const Todos = () => {
-  const [todos, setTodos] = useState([]);
+interface CreatedTodo {
+  id: number;
+  title: string;
+  description: string;
+  done: boolean;
+}
+
+type GetTodos = () => void;
+
+const Todos: React.FC = () => {
+  const [todos, setTodos] = useState<Array<CreatedTodo>>([]);
 
   useEffect(() => {
-    const get_todos = async () => {
+    const get_todos: GetTodos = async () => {
       // const params = {
       //   method: "GET",
       // }
@@ -14,7 +23,7 @@ const Todos = () => {
 
       // const data = await response.json();
 
-      const data = [
+      const data: Array<CreatedTodo> = [
         {
           id: 1,
           title: "5/8朝",
@@ -50,7 +59,7 @@ const Todos = () => {
   return (
     <div>
       {todos.map(todo => 
-        <Todo key={todo.id} todo={todo} />
+        <Todo todo={todo} />
       )}
     </div>
   );

@@ -1,22 +1,33 @@
 import React, {useState} from "react";
 
-const Form = () => {
-  const [todo, setTodo] = useState({
+interface NewTodo {
+  title: string;
+  description: string;
+  done: boolean;
+}
+
+type HandleChangeEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>;
+
+type HandleSubmit = () => void;
+
+const Form: React.FC = () => {
+  const [todo, setTodo] = useState<NewTodo>({
     title: "",
     description: "",
     done: false,
   });
 
-  const handleChange = (event) => {
+  const handleChange: React.ChangeEventHandler = (event: HandleChangeEvent) => {
     const key = event.target.name;
     const val = event.target.value;
     setTodo({...todo, [key]: val});
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit: HandleSubmit = async () => {
     const params = {
       method: "POST",
-      body: new URLSearchParams(todo),
+      // body: new URLSearchParams(todo),
+      body: JSON.stringify(todo)
     };
 
     const create_result = await fetch("/todos", params);
@@ -33,7 +44,7 @@ const Form = () => {
       <div>
         <label>
           Description:
-          <textarea type="text" name="description" value={todo.description} onChange={handleChange} />
+          <textarea name="description" value={todo.description} onChange={handleChange} />
         </label>
       </div>
       <input type="submit" value="Send" />

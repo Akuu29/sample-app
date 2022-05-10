@@ -1,24 +1,35 @@
 import React, {useState} from "react";
 
-const EditForm = (props) => {
+interface CreatedTodo {
+  id: number;
+  title: string;
+  description: string;
+  done: boolean;
+}
+
+type HandleChangeEvent = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>;
+
+type HandleSubmitEdit = () => void;
+
+const EditForm: React.FC<{targetTodo: CreatedTodo}> = ({targetTodo}) => {
   const [todo, setTodo] = useState({
-    id: props.todo.id,
-    title: props.todo.title,
-    description: props.todo.description,
-    done: props.todo.done,
+    id: targetTodo.id,
+    title: targetTodo.title,
+    description: targetTodo.description,
+    done: targetTodo.done,
   });
 
-  const handleChangeEdit = (event) => {
+  const handleChangeEdit: React.ChangeEventHandler = (event: HandleChangeEvent) => {
     const key = event.target.name;
     const val = event.target.value;
     setTodo({...todo, [key]: val});
   }
 
-  const handleSubmitEdit = async () => {
-    const todo = this.state;
+  const handleSubmitEdit: HandleSubmitEdit = async () => {
     const params = {
       method: "PUT",
-      body: new URLSearchParams(todo),
+      // body: new URLSearchParams(todo),
+      body: JSON.stringify(todo)
     };
     const edit_result = await fetch("/todos", params);
   }
