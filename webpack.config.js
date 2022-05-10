@@ -4,15 +4,18 @@ const path = require('path');
 module.exports = {
   mode: "development",
   entry: {
-    bundle: path.join(__dirname, "static/js", "client.js")
+    bundle: path.join(__dirname, "static/js", "client.tsx")
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: "babel-loader",
+        test: /\.tsx?$/,
+        loader: "ts-loader",
       }
     ]
+  },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"]
   },
   devServer: {
     static: {
