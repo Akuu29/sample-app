@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from "react";
 import Todo from "./Todos/Todo";
+import {css} from "@emotion/react";
+
+const todosStyle = css({
+  textAlign: "center",
+});
 
 interface CreatedTodo {
   id: number;
@@ -57,7 +62,7 @@ const Todos: React.FC = () => {
   }, [])
 
   return (
-    <div>
+    <div css={todosStyle}>
       {todos.map(todo => 
         <Todo todo={todo} />
       )}

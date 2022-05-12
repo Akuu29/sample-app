@@ -1,8 +1,17 @@
 import React, {useState} from "react";
+import {css} from "@emotion/react";
 import DoneBtn from "./Todo/DoneBtn";
 import EditBtn from "./Todo/EditBtn";
 import Edit from "./Todo/Edit";
 import DeleteBtn from "./Todo/DeleteBtn";
+
+const todoBox = css({
+  padding: 40
+});
+
+const flex = css({
+  display: "flex",
+})
 
 interface CreatedTodo {
   id: number;
@@ -50,18 +59,20 @@ const Todo: React.FC<{todo: CreatedTodo}> = ({todo}) => {
   }
 
   return (
-    <div>
+    <div css={todoBox}>
       <p>Title: {todo.title}</p>
       <p>Description: {todo.description}</p>
       {todo.done && <p>Status: Complete</p>}
       {!todo.done &&
         <div>
           <p>Status: Incomplete</p>
-          <DoneBtn onClick={() => handleDoneBtn(todo)} />
-          <EditBtn onClick={() => handleRenderEditForm("show")} />
-          <Edit isShow={isShow}
-            callback={() => handleRenderEditForm("hide")}
-            todo={todo} />
+          <div>
+            <DoneBtn onClick={() => handleDoneBtn(todo)} />
+            <EditBtn onClick={() => handleRenderEditForm("show")} />
+            <Edit isShow={isShow}
+              callback={() => handleRenderEditForm("hide")}
+              todo={todo} />
+          </div>
         </div>}
       <DeleteBtn onClick={() => handleDeleteBtn(todo)} />
     </div>

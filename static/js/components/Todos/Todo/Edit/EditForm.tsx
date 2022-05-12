@@ -46,7 +46,7 @@ const EditForm: React.FC<{targetTodo: CreatedTodo}> = ({targetTodo}) => {
       <div>
         <label>
           Description:
-          <input type="text" name="description" value={todo.description}
+          <textarea name="description" value={todo.description}
             onChange={handleChangeEdit} />
         </label>
       </div>

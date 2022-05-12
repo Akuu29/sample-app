@@ -1,4 +1,13 @@
 import React, {useState} from "react";
+import {css} from "@emotion/react";
+
+const form = css({
+  textAlign: "center",
+})
+
+const label = css({
+  // display: "flex",
+})
 
 interface NewTodo {
   title: string;
@@ -34,17 +43,19 @@ const Form: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form css={form} onSubmit={handleSubmit}>
       <div>
-        <label>
+        <label css={label}>
           Title:
-          <input type="text" name="title" value={todo.title} onChange={handleChange} />
+          <input type="text" name="title" value={todo.title}
+            onChange={handleChange} />
         </label>
       </div>
       <div>
         <label>
           Description:
-          <textarea name="description" value={todo.description} onChange={handleChange} />
+          <textarea name="description" value={todo.description}
+            onChange={handleChange} />
         </label>
       </div>
       <input type="submit" value="Send" />
