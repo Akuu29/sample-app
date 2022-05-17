@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
  * AsChangeset -> 構造にアップデートをかけられる特性を付与
  * Insertable -> 構造にデータ作成をできる特性を付与
  */
-#[derive(Deserialize, Serialize, AsChangeset, Insertable)]
+#[derive(Deserialize, AsChangeset, Insertable)]
 #[table_name="todos"]
 pub struct NewTodo {
     pub title: String,
@@ -26,17 +26,6 @@ pub struct Todo {
     pub done: bool,
 }
 
-// リクエストデータからTodo構造体を作成する
-// impl NewTodo {
-//     fn from(todo: NewTodo) -> NewTodo {
-//         NewTodo {
-//             title: todo.title, 
-//             description: todo.description,
-//             done: todo.done,
-//         }
-//     }
-// }
-
 impl Todo {
     // 全件取得
     pub fn find_all() -> Result<Vec<Self>, CustomError> {
@@ -45,15 +34,14 @@ impl Todo {
         Ok(todos)
     }
     // id指定取得
-    pub fn find(id: u64) -> Result<Self, CustomError> {
-        let conn = db::connection()?;
-        let todo = todos::table.filter(todos::id.eq(id)).first(&conn)?;
-        Ok(todo)
-    }
+    // pub fn find(id: u64) -> Result<Self, CustomError> {
+    //     let conn = db::connection()?;
+    //     let todo = todos::table.filter(todos::id.eq(id)).first(&conn)?;
+    //     Ok(todo)
+    // }
     // 作成
     pub fn create(todo: NewTodo) -> Result<usize, CustomError> {
         let conn = db::connection()?;
-        // let todo = NewTodo::from(todo);
         let todo = diesel::insert_into(todos::table)
           .values(todo)
           .execute(&conn)?;
