@@ -28,10 +28,14 @@ const EditForm: React.FC<{targetTodo: CreatedTodo}> = ({targetTodo}) => {
   const handleSubmitEdit: HandleSubmitEdit = async () => {
     const params = {
       method: "PUT",
-      // body: new URLSearchParams(todo),
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(todo)
     };
+
     const edit_result = await fetch("/todos", params);
+    // エラーハンドラ
   }
 
   return (

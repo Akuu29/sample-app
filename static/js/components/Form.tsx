@@ -5,10 +5,6 @@ const form = css({
   textAlign: "center",
 })
 
-const label = css({
-  // display: "flex",
-})
-
 interface NewTodo {
   title: string;
   description: string;
@@ -35,17 +31,20 @@ const Form: React.FC = () => {
   const handleSubmit: HandleSubmit = async () => {
     const params = {
       method: "POST",
-      // body: new URLSearchParams(todo),
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(todo)
     };
 
     const create_result = await fetch("/todos", params);
+    // エラーハンドラ
   }
 
   return (
     <form css={form} onSubmit={handleSubmit}>
       <div>
-        <label css={label}>
+        <label>
           Title:
           <input type="text" name="title" value={todo.title}
             onChange={handleChange} />

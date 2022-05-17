@@ -35,7 +35,10 @@ const Todo: React.FC<{todo: CreatedTodo}> = ({todo}) => {
 
     const params = {
       method: "PATCH",
-      body: new URLSearchParams(todoCompleted),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todoCompleted),
     };
 
     const done_result = await fetch("/todos", params);
@@ -50,7 +53,9 @@ const Todo: React.FC<{todo: CreatedTodo}> = ({todo}) => {
   const handleDeleteBtn: HandleDeleteBtn = async (todo) => {
     const params = {
       method: "DELETE",
-      // body: new URLSearchParams(todo),
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(todo)
     }
 
