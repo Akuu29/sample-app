@@ -6,6 +6,7 @@ extern crate diesel_migrations;
 use actix_web::{App, HttpServer};
 use actix_web::middleware::Logger;
 use actix_web::web::Data;
+use actix_files::Files;
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;
@@ -26,9 +27,9 @@ async fn main() -> std::io::Result<()> {
     let mut server = HttpServer::new(move || {
         App::new()
             .app_data(Data::new(Tera::new("templates/**/*").unwrap()))
-            .service(actix_files::Files::new("/static", "./static"))
-            .configure(todos::init_routes)
+            .service(Files::new("/static", "./static"))
             // .service(todos::get_scope())
+            .configure(todos::init_routes)
             .wrap(Logger::default())
     });
 
