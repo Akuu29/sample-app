@@ -3,7 +3,7 @@ import {css} from "@emotion/react";
 import EditForm from "./Edit/EditForm";
 import CloseBtn from "./Edit/CloseBtn";
 
-const editBox = css({
+const editArea = css({
   position: "fixed",
   top: 0,
   left: 0,
@@ -17,11 +17,15 @@ const editBox = css({
 
 const editContent = css({
   zIndex: 2,
-  height: "20%",
-  width: "30%",
+  height: "40%",
+  width: "50%",
   padding: "1em",
   background: "#fff",
 });
+
+const editContentBtn = css({
+  paddingTop: 20,
+})
 
 interface CreatedTodo {
   id: number;
@@ -40,10 +44,14 @@ const Edit: React.FC<Props> = (props) => {
   let isShow = props.isShow;
   if(isShow) {
     return (
-      <div css={editBox}>
+      <div css={editArea}>
         <div css={editContent}>
-          <EditForm targetTodo={props.todo} />
-          <CloseBtn onClick={props.callback} /> 
+          <div>
+            <EditForm targetTodo={props.todo} />
+          </div>
+          <div css={editContentBtn}>
+            <CloseBtn onClick={props.callback} /> 
+          </div>
         </div>
       </div>
     );

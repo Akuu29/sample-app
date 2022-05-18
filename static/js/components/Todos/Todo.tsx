@@ -5,13 +5,24 @@ import EditBtn from "./Todo/EditBtn";
 import Edit from "./Todo/Edit";
 import DeleteBtn from "./Todo/DeleteBtn";
 
-const todoBox = css({
+const todoArea = css({
   padding: 40
 });
 
-const flex = css({
-  display: "flex",
-})
+const font = css({
+  fontWeight: "bold",
+});
+
+const todoContent = css({
+  marginLeft: "auto",
+  marginRight: "auto",
+  width: 500,
+  paddingBottom: 10,
+});
+
+const btnArea = css({
+  textAlign: "center",
+});
 
 interface CreatedTodo {
   id: number;
@@ -64,22 +75,41 @@ const Todo: React.FC<{todo: CreatedTodo}> = ({todo}) => {
   }
 
   return (
-    <div css={todoBox}>
-      <p>Title: {todo.title}</p>
-      <p>Description: {todo.description}</p>
-      {todo.done && <p>Status: Complete</p>}
-      {!todo.done &&
-        <div>
-          <p>Status: Incomplete</p>
+    <div css={todoArea}>
+      <div css={todoContent}>
+        <label css={font}>Title:</label>
+        <div>{todo.title}</div>
+      </div>
+      <div css={todoContent}>
+        <label css={font}>Description:</label>
+        <div>{todo.description}</div>
+      </div>
+      <div>
+        {todo.done && 
+          <div css={todoContent}>
+            <label css={font}>Status:</label>
+            <div>Complete</div>
+          </div>}
+        {!todo.done &&
           <div>
-            <DoneBtn onClick={() => handleDoneBtn(todo)} />
-            <EditBtn onClick={() => handleRenderEditForm("show")} />
-            <Edit isShow={isShow}
+            <div css={todoContent}>
+              <label css={font}>Status:</label>
+              <div>Incomplete</div>
+            </div>
+            <div css={[btnArea, todoContent]}>
+              <DoneBtn onClick={() => handleDoneBtn(todo)} />
+            </div>
+            <div css={[btnArea, todoContent]}>
+              <EditBtn onClick={() => handleRenderEditForm("show")} />
+              <Edit isShow={isShow}
               callback={() => handleRenderEditForm("hide")}
               todo={todo} />
-          </div>
-        </div>}
-      <DeleteBtn onClick={() => handleDeleteBtn(todo)} />
+            </div>
+          </div>}
+        <div css={btnArea}>
+          <DeleteBtn onClick={() => handleDeleteBtn(todo)} />
+        </div>
+      </div>
     </div>
   );
 }

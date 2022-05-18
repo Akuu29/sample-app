@@ -3,19 +3,20 @@
 <head>
   {% block head %}
   <meta charset="UTF-8">
-  <title>{% block title %}{% endblock title %} rust-sample-app-todo</title>
-  <!-- <link rel="stylesheet"> -->
+  <title>{% block title %}{% endblock title %} rust-practice-app-todo</title>
   {% endblock head %}
 </head>
 <body>
-  <div id="header">
-    simple todo app
+  <div class="header">
+    <h1>Rust practice todo app</h1>
+    <h3>client: React</h3>
+    <h3>server: actix-web</h3>
   </div>
   <div id="content">
     {% block content %}{% endblock content %}
   </div>
-  <div id="footer">
-    simple todo app
+  <div class="footer">
+    <h4>Rsut practice todo app</h4>
   </div>
 </body>
 </html>
